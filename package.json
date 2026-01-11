@@ -1,0 +1,14 @@
+{
+  "name": "link-shortener",
+  "version": "1.0.0",
+  "description": "Team Link Shortener",
+  "scripts": {
+    "build": "echo 'Build complete'"
+  },
+  "dependencies": {
+    "netlify-lambda": "^2.0.16"
+  },
+  "devDependencies": {
+    "@netlify/plugin-functions-install-core": "^1.0.2"
+  }
+}
