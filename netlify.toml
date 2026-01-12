@@ -1,11 +1,21 @@
 [build]
-  command = "echo 'No build required for static site'"
+  command = "echo 'No build required'"
   publish = "public"
   functions = "functions"
 
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/l/*"
+  to = "/redirect.html"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/dashboard.html"
   status = 200
 
 [[redirects]]
