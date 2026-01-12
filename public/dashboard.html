@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { margin: 0; padding: 20px; background: #000; color: white; font-family: Arial; }
+        .container { max-width: 800px; margin: auto; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #333; }
+        .logo { color: #0066ff; font-size: 24px; font-weight: bold; }
+        .logout { background: red; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        .card { background: #111; padding: 20px; border-radius: 10px; margin: 20px 0; border: 1px solid #333; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; background: #222; border: 1px solid #333; border-radius: 5px; color: white; }
+        button { background: #00aa00; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; }
+        .result { background: #222; padding: 15px; border-radius: 5px; margin-top: 15px; display: none; }
+        .url { color: #0066ff; word-break: break-all; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🔗 Link Shortener</div>
+            <button class="logout" onclick="logout()">Logout</button>
+        </header>
+        
+        <div class="card">
+            <h2>Create Short Link</h2>
+            <input type="url" id="urlInput" placeholder="https://example.com">
+            <button onclick="shortenUrl()">Shorten URL</button>
+            <div class="result" id="result">
+                <div class="url" id="shortUrl"></div>
+                <button onclick="copyUrl()" style="background:#0066ff; margin-top:10px;">Copy</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check if logged in
+        if (!localStorage.getItem('loggedIn')) {
+            window.location.href = '/';
+        }
+        
+        // Shorten URL
+        async function shortenUrl() {
+            const url = document.getElementById('urlInput').value;
+            if (!url) return alert('Enter URL');
+            
+            try {
+                // For now, just show a dummy URL
+                const shortCode = Math.random().toString(36).substring(7);
+                const shortUrl = `https://linkshortnerbyanish.netlify.app/l/${shortCode}`;
+                
+                document.getElementById('shortUrl').textContent = shortUrl;
+                document.getElementById('result').style.display = 'block';
+                
+                // Log to Telegram
+                await fetch('/api/log-error', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({error: {page: 'dashboard', message: `Link created: ${url}`}})
+                });
+                
+            } catch (error) {
+                alert('Error creating link');
+            }
+        }
+        
+        // Copy URL
+        function copyUrl() {
+            const text = document.getElementById('shortUrl').textContent;
+            navigator.clipboard.writeText(text);
+            alert('Copied!');
+        }
+        
+        // Logout
+        function logout() {
+            localStorage.removeItem('loggedIn');
+            window.location.href = '/';
+        }
+        
+        // Enter key in input
+        document.getElementById('urlInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') shortenUrl();
+        });
+    </script>
+</body>
+</html>
