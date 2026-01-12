@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirect | Security Check</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f1f5f9;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .icon {
+            font-size: 60px;
+            color: #f59e0b;
+            margin-bottom: 20px;
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fbbf24;
+        }
+        
+        .description {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #3b82f6, #6366f1);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(90deg, #2563eb, #4f46e5);
+            transform: translateY(-2px);
+        }
+        
+        .error {
+            color: #f87171;
+            margin: 10px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🔒</div>
+        <h1 class="title">Security Verification Required</h1>
+        <p class="description">
+            This link is protected. Enter the security password to continue.
+            Unauthorized access is strictly prohibited.
+        </p>
+        
+        <div class="error" id="errorMessage"></div>
+        
+        <input type="password" 
+               class="password-input" 
+               id="passwordInput" 
+               placeholder="Enter security password"
+               autocomplete="off"
+               onkeypress="if(event.key === 'Enter') verifyRedirect()">
+        
+        <button class="submit-btn" onclick="verifyRedirect()">
+            Continue to Link
+        </button>
+    </div>
+    
+    <script>
+        // Get short code from URL
+        const path = window.location.pathname;
+        const shortCode = path.startsWith('/l/') ? path.substring(3) : '';
+        
+        async function verifyRedirect() {
+            const password = document.getElementById('passwordInput').value;
+            const errorElement = document.getElementById('errorMessage');
+            
+            if (!password) {
+                showError('Please enter the password');
+                return;
+            }
+            
+            if (password === "@35678") {
+                // Get original URL
+                try {
+                    const response = await fetch(`/api/get-link?code=${shortCode}`);
+                    const result = await response.json();
+                    
+                    if (result.success && result.found) {
+                        window.location.href = result.original_url;
+                    } else {
+                        showError('Link not found or expired');
+                    }
+                } catch (error) {
+                    showError('Network error. Please try again.');
+                }
+            } else {
+                showError('Incorrect password');
+            }
+        }
+        
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+        
+        // Auto-focus on input
+        document.getElementById('passwordInput').focus();
+    </script>
+</body>
+</html>
