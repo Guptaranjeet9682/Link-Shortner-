@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Check</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0f172a;
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🔐 Password Required</h2>
+        <p>Enter password to access the link:</p>
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="verify()">Access Link</button>
+    </div>
+    
+    <script>
+        // Get short code from URL
+        const path = window.location.pathname;
+        const shortCode = path.startsWith('/l/') ? path.substring(3) : '';
+        
+        async function verify() {
+            const password = document.getElementById('password').value;
+            
+            if (password === "@35678") {
+                try {
+                    const response = await fetch(`/api/get-link?code=${shortCode}`);
+                    const result = await response.json();
+                    
+                    if (result.success && result.found) {
+                        window.location.href = result.original_url;
+                    } else {
+                        alert('Link not found');
+                    }
+                } catch (error) {
+                    alert('Network error');
+                }
+            } else {
+                alert('Wrong password');
+            }
+        }
+        
+        // Enter key
+        document.getElementById('password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                verify();
+            }
+        });
+    </script>
+</body>
+</html>
