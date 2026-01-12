@@ -1,11 +1,11 @@
 [build]
-  command = "python -c \"print('Build complete')\""
+  command = "python -c \"print('Build started')\" && pip install requests -t functions/"
   publish = "public"
   functions = "functions"
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/api"
+  to = "/.netlify/functions/api/:splat"
   status = 200
 
 [[redirects]]
@@ -13,16 +13,5 @@
   to = "/index.html"
   status = 200
 
-[[redirects]]
-  from = "/l/*"
-  to = "/index.html"
-  status = 200
-
-[[redirects]]
-  from = "/dashboard"
-  to = "/dashboard.html"
-  status = 200
-
 [build.environment]
-  PYTHON_VERSION = "3.11"
-  NODE_VERSION = "18"
+  PYTHON_VERSION = "3.12"
