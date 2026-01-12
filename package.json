@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Team Link Shortener",
   "scripts": {
-    "build": "echo 'Build complete'",
-    "postinstall": "cd functions && if [ -f requirements.txt ]; then pip install -r requirements.txt -t python; fi"
+    "build": "echo 'Build complete'"
   },
   "engines": {
     "node": ">=18"
